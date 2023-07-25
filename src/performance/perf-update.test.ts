@@ -20,8 +20,7 @@ export let options = {
     thresholds: {
         http_req_duration: ["p(99)<1500"], // 99% of requests must complete below 1.5s
         checks: ['rate>0.9'], // 90% of the request must be completed
-        "http_req_duration{api:get-all-payment-methods-test}": ["p(95)<1000"],
-        "http_req_duration{api:get-single-payment-method-test}": ["p(95)<1000"]
+        "http_req_duration{api:post-create-position-test-update-flow}": ["p(95)<1000"]
     },
 };
 
@@ -38,11 +37,11 @@ export default function () {
 
     let responseUpdate = http.post(urlBasePath, JSON.stringify(createRequestBodyForAca(100 as AmountEuroCents)), {
       ...headersParams,
-      tags: { name: "newDebtPosition" },
+      tags: { name: "post-create-position-test-update-flow" },
     });
     check(
       responseUpdate,
         { "Response status from POST newDebtPosition was 200": (r) => r.status == 200 },
-        { name: "newDebtPosition" }
+        { name: "post-create-position-test-update-flow" }
     );
 }
