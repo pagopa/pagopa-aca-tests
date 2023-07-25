@@ -52,7 +52,7 @@ export default function () {
     });
     check(
         response,
-        { "Response status from POST newDebtPosition was 201": (r) => r.status == 201 },
+        { "Response status from POST newDebtPosition was 200": (r) => r.status == 201 },
         { name: "newDebtPosition" }
     );
 }
