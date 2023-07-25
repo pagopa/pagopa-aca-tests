@@ -29,6 +29,7 @@ export default function () {
     const headersParams = {
       headers: {
         "Content-Type": "application/json",
+        "Ocp-Apim-Subscription-Key": config.API_SUBSCRIPTION_KEY
       },
       redirects: 0,
     };
