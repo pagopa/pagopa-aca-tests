@@ -1,0 +1,92 @@
+# azure-pipelines.yml
+trigger: none
+
+parameters:
+  - name: "DESCRIPTION"
+    type: string
+    default: "Load test"
+  - name: "rate"
+    displayName: "rate"
+    type: string
+    default: "10"
+  - name: "duration"
+    displayName: "duration"
+    type: string
+  - name: "preAllocatedVUs"
+    displayName: "preAllocatedVUs"
+    type: string
+    default: "10"
+  - name: "maxVUs"
+    displayName: "maxVUs"
+    type: string
+    default: "10"
+  - name: "URL_BASE_PATH"
+    displayName: "URL_BASE_PATH"
+    type: string
+    values:
+      - "https://api.uat.platform.pagopa.it/aca/v1/paCreatePosition"
+      - "https://api.dev.platform.pagopa.it/aca/v1/paCreatePosition"
+  - name: "SCRIPT"
+    displayName: "Script name"
+    type: string
+    values:
+      - perf-creation-test
+      - perf-update-test
+      - perf-closure-test
+  # optional sub path where the project to be initialized is located. To be used on repository with multiple projects.
+  - name: "projectDir"
+    type: string
+    default: "." # current folder is default
+  # if not set, the Node version will be red from .node-version and -nvmrc files, in this order
+  - name: "nodeVersion"
+    type: string
+    default: "none"
+  - name: "BYPASS_APIM"
+    displayName: "BYPASS_APIM"
+    type: boolean
+    default: False
+    values:
+      - False
+      - True
+
+stages : 
+  - stage : 'run_with_APIM'
+    displayName: 'Run with APIM'
+    condition: eq(${{parameters.BYPASS_APIM}}, false)
+    pool:
+      vmImage: 'ubuntu-latest'
+    jobs:
+      - job: performance_test_with_APIM
+        steps:
+          - template: azure-templates/soaktest-template.yaml
+            parameters:
+              URL_BASE_PATH: ${{ parameters['URL_BASE_PATH'] }} 
+              rate: ${{ parameters['rate'] }} 
+              duration: ${{ parameters['duration'] }} 
+              preAllocatedVUs: ${{ parameters['preAllocatedVUs'] }}
+              maxVUs: ${{ parameters['maxVUs'] }} 
+              projectDir: ${{ parameters['projectDir']}}
+              nodeVersion: ${{ parameters['nodeVersion']}}
+              SCRIPT: ${{ parameters['SCRIPT']}}
+              DESCRIPTION: ${{ parameters['DESCRIPTION']}}
+              
+  - stage : 'run_without_APIM'
+    displayName: 'Run without APIM'
+    condition: eq(${{parameters.BYPASS_APIM}}, true)
+    pool:
+      name: pagopa-uat-linux
+    jobs:
+      - job: performance_test_without_APIM
+        steps :
+          - template: azure-templates/soaktest-template.yaml
+            parameters:
+              URL_BASE_PATH: ${{ parameters['URL_BASE_PATH'] }} 
+              rate: ${{ parameters['rate'] }} 
+              duration: ${{ parameters['duration'] }} 
+              preAllocatedVUs: ${{ parameters['preAllocatedVUs'] }}
+              maxVUs: ${{ parameters['maxVUs'] }}
+              projectDir: ${{ parameters['projectDir']}}
+              nodeVersion: ${{ parameters['nodeVersion']}}
+              SCRIPT: ${{ parameters['SCRIPT']}}
+              DESCRIPTION: ${{ parameters['DESCRIPTION']}}
+             
