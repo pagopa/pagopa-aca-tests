@@ -12,6 +12,9 @@ parameters:
   - name: "duration"
     displayName: "duration"
     type: string
+  - name: "rampingDuration"
+    displayName: "rampingDuration"
+    type: string
   - name: "preAllocatedVUs"
     displayName: "preAllocatedVUs"
     type: string
@@ -89,4 +92,5 @@ stages :
               nodeVersion: ${{ parameters['nodeVersion']}}
               SCRIPT: ${{ parameters['SCRIPT']}}
               DESCRIPTION: ${{ parameters['DESCRIPTION']}}
+              rampingDuration: ${{ parameters['rampingDuration']}}
              
