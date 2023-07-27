@@ -10,6 +10,6 @@ export const createRequestBodyForAca = (
     entityFullName: "Mario Rossi",
     entityType: EntityTypeEnum.F,
     expirationDate: new Date("2030-01-01T09:00:00.000Z"),
-    iuv: Math.floor(Math.random() * 1000000000000000).toString(),
+    iuv: "000000000000000000",
     paFiscalCode: "66666666666"
 });
