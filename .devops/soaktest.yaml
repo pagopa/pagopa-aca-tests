@@ -72,6 +72,7 @@ stages :
               nodeVersion: ${{ parameters['nodeVersion']}}
               SCRIPT: ${{ parameters['SCRIPT']}}
               DESCRIPTION: ${{ parameters['DESCRIPTION']}}
+              rampingDuration: ${{ parameters['rampingDuration']}}
               
   - stage : 'run_without_APIM'
     displayName: 'Run without APIM'
