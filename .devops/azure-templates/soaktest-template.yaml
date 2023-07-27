@@ -32,6 +32,9 @@ parameters:
   - name: "nodeVersion"
     type: string
     default: "none"
+  - name: "rampingDuration"
+    displayName: "rampingDuration"
+    type: string
 steps:
   # If a Node version is defined explicitly by parameter, such version is used
   # Else, version is red from .node-version file
@@ -76,6 +79,7 @@ steps:
         -e duration=${{ parameters.duration }} \
         -e preAllocatedVUs=${{ parameters.preAllocatedVUs }} \
         -e maxVUs=${{ parameters.maxVUs }} \
+        -e rampingDuration=${{ parameters.rampingDuration }} \
         loadimpact/k6 \
         run /dist/${{ parameters.SCRIPT }}.js \
     timeoutInMinutes: 120
