@@ -29,12 +29,11 @@ parameters:
     values:
       - "DEV"
       - "UAT"
-  - name: "URL_BASE_PATH"
-    displayName: "URL_BASE_PATH"
+  - name: "API_PATH"
+    displayName: "API_PATH"
     type: string
     values:
-      - "https://api.uat.platform.pagopa.it/aca/v1/paCreatePosition"
-      - "https://api.dev.platform.pagopa.it/aca/v1/paCreatePosition"
+      - "/aca/v1/paCreatePosition"
   - name: "SCRIPT"
     displayName: "Script name"
     type: string
@@ -70,7 +69,7 @@ stages :
           - template: azure-templates/soaktest-template.yaml
             parameters:
               ENVIRONMENT: ${{ parameters['ENVIRONMENT'] }} 
-              URL_BASE_PATH: ${{ parameters['URL_BASE_PATH'] }} 
+              API_PATH: ${{ parameters['API_PATH'] }} 
               rate: ${{ parameters['rate'] }} 
               duration: ${{ parameters['duration'] }} 
               preAllocatedVUs: ${{ parameters['preAllocatedVUs'] }}
@@ -92,7 +91,7 @@ stages :
           - template: azure-templates/soaktest-template.yaml
             parameters:
               ENVIRONMENT: ${{ parameters['ENVIRONMENT'] }} 
-              URL_BASE_PATH: ${{ parameters['URL_BASE_PATH'] }} 
+              API_PATH: ${{ parameters['API_PATH'] }} 
               rate: ${{ parameters['rate'] }} 
               duration: ${{ parameters['duration'] }} 
               preAllocatedVUs: ${{ parameters['preAllocatedVUs'] }}
