@@ -23,6 +23,12 @@ parameters:
     displayName: "maxVUs"
     type: string
     default: "10"
+  - name: "ENVIRONMENT"
+    displayName: "ENVIRONMENT"
+    type: string
+    values:
+      - "DEV"
+      - "UAT"
   - name: "URL_BASE_PATH"
     displayName: "URL_BASE_PATH"
     type: string
@@ -84,6 +90,7 @@ stages :
         steps :
           - template: azure-templates/soaktest-template.yaml
             parameters:
+              ENVIRONMENT: ${{ parameters['ENVIRONMENT'] }} 
               URL_BASE_PATH: ${{ parameters['URL_BASE_PATH'] }} 
               rate: ${{ parameters['rate'] }} 
               duration: ${{ parameters['duration'] }} 
