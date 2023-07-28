@@ -44,11 +44,6 @@ export default function () {
       ...headersParams,
       tags: { name: "post-create-position-test-creation-flow" },
     });
-
-    if(response.status !=200){
-      console.log(response.status)
-      console.log(response.body)
-    }
     check(
         response,
         { "Response status from POST newDebtPosition was 200": (r) => r.status == 200 },
