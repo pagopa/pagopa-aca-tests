@@ -69,6 +69,7 @@ stages :
         steps:
           - template: azure-templates/soaktest-template.yaml
             parameters:
+              ENVIRONMENT: ${{ parameters['ENVIRONMENT'] }} 
               URL_BASE_PATH: ${{ parameters['URL_BASE_PATH'] }} 
               rate: ${{ parameters['rate'] }} 
               duration: ${{ parameters['duration'] }} 
