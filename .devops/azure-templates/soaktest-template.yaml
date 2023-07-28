@@ -74,7 +74,7 @@ steps:
       docker run -i \
         -v $(pwd)/dist:/dist \
         -e URL_BASE_PATH=${{ parameters.URL_BASE_PATH }} \
-        -e API_SUBSCRIPTION_KEY='$(API_SUBSCRIPTION_KEY_UAT)' \
+        -e API_SUBSCRIPTION_KEY='$(API_SUBSCRIPTION_KEY)' \
         -e rate=${{ parameters.rate }} \
         -e duration=${{ parameters.duration }} \
         -e preAllocatedVUs=${{ parameters.preAllocatedVUs }} \

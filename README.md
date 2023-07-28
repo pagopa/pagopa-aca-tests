@@ -14,3 +14,40 @@ Let's keep in mind that before perform a load test you have to:
 - run `yarn install`
 - run `yarn webpack`
 
+## 01. Soak tests paCreatePosition creation flow
+
+This test execute the ACA create position api.
+
+```
+$ docker run -i --rm -v $(pwd)/dist:/dist  -e API_SUBSCRIPTION_KEY=${API_SUBSCRIPTION_KEY} -e URL_BASE_PATH=${URL_BASE_PATH} -e rate=${rate} -e duration=${duration} -e preAllocatedVUs=${preAllocatedVUs} -e maxVUs=${maxVUs} loadimpact/k6 run /dist/perf-creation.test.js
+```
+To run test and load env vars from `.env` file:
+
+```
+$ yarn webpack && docker run -i --rm -v $(pwd)/dist:/dist  --env-file .env loadimpact/k6 run /dist/perf-creation.test.js
+```
+
+## 01. Soak tests paCreatePosition update flow
+
+This test execute the ACA create position api.
+
+```
+$ docker run -i --rm -v $(pwd)/dist:/dist  -e API_SUBSCRIPTION_KEY=${API_SUBSCRIPTION_KEY} -e URL_BASE_PATH=${URL_BASE_PATH} -e rate=${rate} -e duration=${duration} -e preAllocatedVUs=${preAllocatedVUs} -e maxVUs=${maxVUs} loadimpact/k6 run /dist/perf-update.test.js
+```
+To run test and load env vars from `.env` file:
+
+```
+$ yarn webpack && docker run -i --rm -v $(pwd)/dist:/dist  --env-file .env loadimpact/k6 run /dist/perf-update.test.js
+```
+
+## 01. Soak tests paCreatePosition invalidate flow
+
+This test execute the ACA create position api.
+
+```
+$ docker run -i --rm -v $(pwd)/dist:/dist  -e API_SUBSCRIPTION_KEY=${API_SUBSCRIPTION_KEY} -e URL_BASE_PATH=${URL_BASE_PATH} -e rate=${rate} -e duration=${duration} -e preAllocatedVUs=${preAllocatedVUs} -e maxVUs=${maxVUs} loadimpact/k6 run /dist/perf-closure.test.js
+```
+To run test and load env vars from `.env` file:
+
+```
+$ yarn webpack && docker run -i --rm -v $(pwd)/dist:/dist  --env-file .env loadimpact/k6 run /dist/perf-closure.test.js
