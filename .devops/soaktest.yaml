@@ -23,19 +23,24 @@ parameters:
     displayName: "maxVUs"
     type: string
     default: "10"
-  - name: "URL_BASE_PATH"
-    displayName: "URL_BASE_PATH"
+  - name: "ENVIRONMENT"
+    displayName: "ENVIRONMENT"
     type: string
     values:
-      - "https://api.uat.platform.pagopa.it/aca/v1/paCreatePosition"
-      - "https://api.dev.platform.pagopa.it/aca/v1/paCreatePosition"
+      - "DEV"
+      - "UAT"
+  - name: "API_PATH"
+    displayName: "API_PATH"
+    type: string
+    values:
+      - "/aca/v1/paCreatePosition"
   - name: "SCRIPT"
     displayName: "Script name"
     type: string
     values:
-      - perf-creation-test
-      - perf-update-test
-      - perf-closure-test
+      - perf-creation.test
+      - perf-update.test
+      - perf-closure.test
   # optional sub path where the project to be initialized is located. To be used on repository with multiple projects.
   - name: "projectDir"
     type: string
@@ -63,7 +68,8 @@ stages :
         steps:
           - template: azure-templates/soaktest-template.yaml
             parameters:
-              URL_BASE_PATH: ${{ parameters['URL_BASE_PATH'] }} 
+              ENVIRONMENT: ${{ parameters['ENVIRONMENT'] }} 
+              API_PATH: ${{ parameters['API_PATH'] }} 
               rate: ${{ parameters['rate'] }} 
               duration: ${{ parameters['duration'] }} 
               preAllocatedVUs: ${{ parameters['preAllocatedVUs'] }}
@@ -84,7 +90,8 @@ stages :
         steps :
           - template: azure-templates/soaktest-template.yaml
             parameters:
-              URL_BASE_PATH: ${{ parameters['URL_BASE_PATH'] }} 
+              ENVIRONMENT: ${{ parameters['ENVIRONMENT'] }} 
+              API_PATH: ${{ parameters['API_PATH'] }} 
               rate: ${{ parameters['rate'] }} 
               duration: ${{ parameters['duration'] }} 
               preAllocatedVUs: ${{ parameters['preAllocatedVUs'] }}

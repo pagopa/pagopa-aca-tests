@@ -18,8 +18,11 @@ parameters:
     displayName: "maxVUs"
     type: string
     default: "10"
-  - name: "URL_BASE_PATH"
-    displayName: "URL_BASE_PATH"
+  - name: "ENVIRONMENT"
+    displayName: "ENVIRONMENT"
+    type: string
+  - name: "API_PATH"
+    displayName: "API_PATH"
     type: string
   - name: "SCRIPT"
     displayName: "Script name"
@@ -70,17 +73,33 @@ steps:
   - script: |
       docker pull loadimpact/k6
     displayName: Pull k6 image
-  - script: |
-      docker run -i \
-        -v $(pwd)/dist:/dist \
-        -e URL_BASE_PATH=${{ parameters.URL_BASE_PATH }} \
-        -e API_SUBSCRIPTION_KEY='$(API_SUBSCRIPTION_KEY)' \
-        -e rate=${{ parameters.rate }} \
-        -e duration=${{ parameters.duration }} \
-        -e preAllocatedVUs=${{ parameters.preAllocatedVUs }} \
-        -e maxVUs=${{ parameters.maxVUs }} \
-        -e rampingDuration=${{ parameters.rampingDuration }} \
-        loadimpact/k6 \
-        run /dist/${{ parameters.SCRIPT }}.js \
-    timeoutInMinutes: 120
-    displayName: Run k6 ${{ parameters.SCRIPT }} on ${{ parameters.DESCRIPTION }} 
+  - ${{ if eq(parameters.ENVIRONMENT, 'DEV') }}:
+      - script: |  
+          docker run -i \
+            -v $(pwd)/dist:/dist \
+            -e URL_BASE_PATH=https://api.dev.platform.pagopa.it/${{parameters.API_PATH}} \
+            -e API_SUBSCRIPTION_KEY='$(API_SUBSCRIPTION_KEY_DEV)' \
+            -e rate=${{ parameters.rate }} \
+            -e duration=${{ parameters.duration }} \
+            -e preAllocatedVUs=${{ parameters.preAllocatedVUs }} \
+            -e maxVUs=${{ parameters.maxVUs }} \
+            -e rampingDuration=${{ parameters.rampingDuration }} \
+            loadimpact/k6 \
+            run /dist/${{ parameters.SCRIPT }}.js \
+        timeoutInMinutes: 120
+        displayName: Run k6 ${{ parameters.SCRIPT }} on ${{ parameters.DESCRIPTION }} 
+  - ${{ if eq(parameters.ENVIRONMENT, 'UAT') }}:
+      - script: |
+          docker run -i \
+            -v $(pwd)/dist:/dist \
+            -e URL_BASE_PATH=https://api.uat.platform.pagopa.it/${{parameters.API_PATH}} \
+            -e API_SUBSCRIPTION_KEY='$(API_SUBSCRIPTION_KEY_UAT)' \
+            -e rate=${{ parameters.rate }} \
+            -e duration=${{ parameters.duration }} \
+            -e preAllocatedVUs=${{ parameters.preAllocatedVUs }} \
+            -e maxVUs=${{ parameters.maxVUs }} \
+            -e rampingDuration=${{ parameters.rampingDuration }} \
+            loadimpact/k6 \
+            run /dist/${{ parameters.SCRIPT }}.js \
+        timeoutInMinutes: 120
+        displayName: Run k6 ${{ parameters.SCRIPT }} on ${{ parameters.DESCRIPTION }} 
