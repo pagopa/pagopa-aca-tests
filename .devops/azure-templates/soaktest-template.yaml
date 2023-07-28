@@ -68,6 +68,8 @@ steps:
       yarn install && yarn generate && yarn webpack
     displayName: Install and Run webpack
   - script: |
+      ls
+  - script: |
       docker pull loadimpact/k6
     displayName: Pull k6 image
   - script: |
