@@ -33,9 +33,9 @@ parameters:
     displayName: "Script name"
     type: string
     values:
-      - perf-creation-test
-      - perf-update-test
-      - perf-closure-test
+      - perf-creation.test
+      - perf-update.test
+      - perf-closure.test
   # optional sub path where the project to be initialized is located. To be used on repository with multiple projects.
   - name: "projectDir"
     type: string
